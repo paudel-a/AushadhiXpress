@@ -1,4 +1,8 @@
+import { useAuth } from "../../context/AuthContext";
+
 function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
+
   return (
     <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-10 py-5">
       {/* Logo */}
@@ -33,10 +37,28 @@ function Navbar() {
         </li>
       </ul>
 
-      {/* Button */}
-      <button className="rounded-lg bg-green-600 px-5 py-2 font-medium text-white transition hover:bg-green-700">
-        Sign In
-      </button>
+      {/* Authentication */}
+      {isAuthenticated ? (
+        <div className="flex items-center gap-4">
+          <span className="font-medium text-gray-700">
+            Hi, {user?.name.split(" ").slice(-1)[0]}
+          </span>
+
+          <button
+            onClick={logout}
+            className="rounded-lg border border-gray-300 px-5 py-2 font-medium text-gray-700 transition hover:bg-gray-100"
+          >
+            Logout
+          </button>
+        </div>
+      ) : (
+        <a
+          href="/login"
+          className="rounded-lg bg-green-600 px-5 py-2 font-medium text-white transition hover:bg-green-700"
+        >
+          Sign In
+        </a>
+      )}
     </nav>
   );
 }
