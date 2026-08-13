@@ -1,0 +1,76 @@
+
+generator client {
+  provider = "prisma-client"
+    output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+enum UserRole {
+  CUSTOMER
+  ADMIN
+  PHARMACIST
+}
+enum PrescriptionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+    role      UserRole @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+prescriptions       Prescription[] @relation("CustomerPrescriptions")
+reviewedPrescriptions Prescription[] @relation("PharmacistPrescriptions")
+}
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  medicines   Medicine[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Medicine {
+  id                   Int      @id @default(autoincrement())
+  name                 String
+  description          String?
+  price                Decimal  @db.Decimal(10, 2)
+  stock                Int      @default(0)
+  image                String?
+  requiresPrescription Boolean  @default(false)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}
+model Prescription {
+  id              Int                @id @default(autoincrement())
+  userId          Int
+  pharmacistId    Int?
+  documentUrl     String
+  status          PrescriptionStatus @default(PENDING)
+  rejectionReason String?
+
+  user       User  @relation("CustomerPrescriptions", fields: [userId], references: [id])
+  pharmacist User? @relation("PharmacistPrescriptions", fields: [pharmacistId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([pharmacistId])
+  @@index([status])
+}
