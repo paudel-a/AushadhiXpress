@@ -17,6 +17,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  loading: boolean;
   logout: () => void;
 }
 
@@ -29,6 +30,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -43,6 +45,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.removeItem("user");
       }
     }
+
+    setLoading(false);
   }, []);
 
   const logout = () => {
@@ -59,6 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user,
         token,
         isAuthenticated: !!token && !!user,
+        loading,
         logout,
       }}
     >

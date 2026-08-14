@@ -8,6 +8,8 @@ import PrescriptionCTA from "./components/home/PrescriptionCTA";
 import Footer from "./components/layout/Footer";
 import Login from "./pages/login";
 import GoogleAuthSuccess from "./pages/GoogleAuthSuccess";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import Profile from "./pages/Profile";
 function Home() {
   return (
     <>
@@ -31,6 +33,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/auth/google/success" element={<GoogleAuthSuccess />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<div>Dashboard</div>} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
