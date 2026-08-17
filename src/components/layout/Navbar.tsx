@@ -25,7 +25,7 @@ function Navbar() {
         </li>
 
         <li>
-          <a href="/" className="transition hover:text-green-600">
+          <a href="/categories" className="transition hover:text-green-600">
             Categories
           </a>
         </li>
@@ -41,12 +41,11 @@ function Navbar() {
       {isAuthenticated ? (
         <div className="flex items-center gap-4">
           <a
-  href="/profile"
-  className="font-medium text-gray-700 transition hover:text-green-700"
->
-Hi, Mr. {user?.name.split(" ").slice(-1)[0]}
-  
-</a>
+            href="/profile"
+            className="font-medium text-gray-700 transition hover:text-green-700"
+          >
+            Hi, Mr. {user?.name.split(" ").slice(-1)[0]}
+          </a>
           <button
             onClick={logout}
             className="rounded-lg border border-gray-300 px-5 py-2 font-medium text-gray-700 transition hover:bg-gray-100"

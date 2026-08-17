@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import {
   Pill,
   HeartPulse,
@@ -45,3 +46,9 @@ export const categories: Category[] = [
     icon: ShieldPlus,
   },
 ];
+
+export interface Category {
+  id: number;
+  name: string;
+  icon: LucideIcon;
+}

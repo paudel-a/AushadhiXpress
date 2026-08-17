@@ -1,7 +1,5 @@
+import { getCategories } from "../../services/categoryService";
 import { useEffect, useState } from "react";
-import api from "../../services/api";
-import CategoryCard from "./CategoryCard";
-
 import {
   Pill,
   HeartPulse,
@@ -9,21 +7,18 @@ import {
   Baby,
   Stethoscope,
   ShieldPlus,
+  type LucideIcon,
 } from "lucide-react";
+import CategoryCard from "./CategoryCard";
+import type { Category } from "../../data/categories";
 
-interface Category {
-  id: number;
-  name: string;
-  description?: string;
-}
-
-const categoryIcons = {
+const categoryIcons: Record<string, LucideIcon> = {
   "Pain Relief": Pill,
-  "Heart Care": HeartPulse,
-  Diabetes: Syringe,
+  "Vitamins & Supplements": HeartPulse,
+  "Diabetes Care": Syringe,
   "Baby Care": Baby,
-  Healthcare: Stethoscope,
-  Immunity: ShieldPlus,
+  "Personal Care": Stethoscope,
+  "First Aid": ShieldPlus,
 };
 
 function Categories() {
@@ -31,18 +26,21 @@ function Categories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await api.get("/categories");
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    getCategories()
+      .then((data) => {
+        const categoriesWithIcons: Category[] = data.map((category) => ({
+          ...category,
+          icon: categoryIcons[category.name] || Pill,
+        }));
 
-    fetchCategories();
+        setCategories(categoriesWithIcons);
+      })
+      .catch((error) => {
+        console.error("Category fetch error:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   if (loading) {
@@ -69,20 +67,9 @@ function Categories() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => {
-            const Icon =
-              categoryIcons[category.name as keyof typeof categoryIcons];
-
-            return (
-              <CategoryCard
-                key={category.id}
-                category={{
-                  ...category,
-                  icon: Icon,
-                }}
-              />
-            );
-          })}
+          {categories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
         </div>
       </div>
     </section>
