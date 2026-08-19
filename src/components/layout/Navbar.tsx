@@ -19,7 +19,7 @@ function Navbar() {
         </li>
 
         <li>
-          <a href="/" className="transition hover:text-green-600">
+          <a href="/medicines" className="transition hover:text-green-600">
             Medicines
           </a>
         </li>

@@ -3,6 +3,7 @@ import cors from "cors";
 import prisma from "./lib/prisma.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+
 import medicineRoutes from "./routes/medicineRoutes.js";
 import prescriptionRoutes from "./routes/prescriptionRoutes.js";
 import passport from "./config/passport.js";
