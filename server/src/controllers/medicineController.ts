@@ -192,3 +192,185 @@ export const createMedicine = async (req: Request, res: Response) => {
     });
   }
 };
+// Update a medicine
+export const updateMedicine = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: "Invalid medicine ID",
+      });
+    }
+
+    const existing = await prisma.medicine.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json({
+        message: "Medicine not found",
+      });
+    }
+
+    const {
+      name,
+      description,
+      price,
+      stock,
+      image,
+      requiresPrescription,
+      categoryId,
+    } = req.body;
+
+    const data: Record<string, unknown> = {};
+
+    if (name !== undefined) {
+      if (typeof name !== "string" || !name.trim()) {
+        return res
+          .status(400)
+          .json({ message: "Name must be a non-empty string" });
+      }
+      data.name = name.trim();
+    }
+
+    if (description !== undefined) {
+      data.description =
+        typeof description === "string" ? description.trim() || null : null;
+    }
+
+    if (price !== undefined) {
+      const parsedPrice = Number(price);
+      if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
+        return res
+          .status(400)
+          .json({ message: "Price must be a valid non-negative number" });
+      }
+      data.price = parsedPrice;
+    }
+
+    if (stock !== undefined) {
+      const parsedStock = Number(stock);
+      if (!Number.isInteger(parsedStock) || parsedStock < 0) {
+        return res
+          .status(400)
+          .json({ message: "Stock must be a non-negative integer" });
+      }
+      data.stock = parsedStock;
+    }
+
+    if (categoryId !== undefined) {
+      const parsedCategoryId = Number(categoryId);
+      if (!Number.isInteger(parsedCategoryId) || parsedCategoryId <= 0) {
+        return res.status(400).json({ message: "Invalid category ID" });
+      }
+      const category = await prisma.category.findUnique({
+        where: { id: parsedCategoryId },
+      });
+      if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+      data.categoryId = parsedCategoryId;
+    }
+
+    if (requiresPrescription !== undefined) {
+      // Coming from FormData, this arrives as the string "true"/"false"
+      const parsed =
+        typeof requiresPrescription === "boolean"
+          ? requiresPrescription
+          : requiresPrescription === "true";
+      data.requiresPrescription = parsed;
+    }
+
+    if (image !== undefined) {
+      data.image = typeof image === "string" ? image.trim() || null : null;
+    }
+
+    const updated = await prisma.medicine.update({
+      where: { id },
+      data,
+      include: { category: true },
+    });
+
+    return res.status(200).json(updated);
+  } catch (error) {
+    console.error("Update medicine error:", error);
+
+    return res.status(500).json({
+      message: "Failed to update medicine",
+    });
+  }
+};
+
+// Delete a medicine
+export const deleteMedicine = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: "Invalid medicine ID",
+      });
+    }
+
+    const existing = await prisma.medicine.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json({
+        message: "Medicine not found",
+      });
+    }
+
+    await prisma.medicine.delete({ where: { id } });
+
+    return res.status(200).json({ message: "Medicine deleted successfully" });
+  } catch (error) {
+    console.error("Delete medicine error:", error);
+
+    return res.status(500).json({
+      message: "Failed to delete medicine",
+    });
+  }
+};
+export const updateMedicineStock = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const stock = Number(req.body.stock);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({
+        message: "Invalid medicine ID",
+      });
+    }
+
+    if (!Number.isInteger(stock) || stock < 0) {
+      return res.status(400).json({
+        message: "Stock must be a non-negative integer",
+      });
+    }
+
+    const medicine = await prisma.medicine.findUnique({
+      where: { id },
+    });
+
+    if (!medicine) {
+      return res.status(404).json({
+        message: "Medicine not found",
+      });
+    }
+
+    const updatedMedicine = await prisma.medicine.update({
+      where: { id },
+      data: {
+        stock,
+      },
+      include: {
+        category: true,
+      },
+    });
+
+    return res.status(200).json(updatedMedicine);
+  } catch (error) {
+    console.error("Update medicine stock error:", error);
+
+    return res.status(500).json({
+      message: "Failed to update medicine stock",
+    });
+  }
+};

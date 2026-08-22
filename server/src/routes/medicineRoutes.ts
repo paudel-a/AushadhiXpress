@@ -5,6 +5,9 @@ import {
   getMedicineById,
   getMedicinesByCategory,
   createMedicine,
+  updateMedicine,
+  deleteMedicine,
+  updateMedicineStock,
 } from "../controllers/medicineController.js";
 
 import { authenticate } from "../middleware/authMiddleware.js";
@@ -17,7 +20,15 @@ router.get("/", getMedicines);
 router.get("/category/:categoryId", getMedicinesByCategory);
 router.get("/:id", getMedicineById);
 
-// Admin-only route
+// Admin-only routes
 router.post("/", authenticate, authorize("ADMIN"), createMedicine);
+router.put("/:id", authenticate, authorize("ADMIN"), updateMedicine);
+router.delete("/:id", authenticate, authorize("ADMIN"), deleteMedicine);
+router.patch(
+  "/:id/stock",
+  authenticate,
+  authorize("ADMIN"),
+  updateMedicineStock,
+);
 
 export default router;

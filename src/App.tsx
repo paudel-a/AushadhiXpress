@@ -13,7 +13,7 @@ import Profile from "./pages/Profile";
 import CategoriesPage from "./pages/CategoriesPage";
 import MedicinesAdminPage from "./pages/admin/MedicinesAdminPage";
 import MedicinePage from "./pages/MedicinePage";
-
+import { CartProvider } from "./context/CartContext";
 function Home() {
   return (
     <>
@@ -40,6 +40,7 @@ function App() {
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/admin/medicines" element={<MedicinesAdminPage />} />
         <Route path="/medicines" element={<MedicinePage />} />
+        <Route path="/cart" element={<CartProvider />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<div>Dashboard</div>} />
           <Route path="/profile" element={<Profile />} />

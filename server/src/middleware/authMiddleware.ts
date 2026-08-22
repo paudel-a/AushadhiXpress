@@ -7,7 +7,7 @@ interface AuthPayload {
 }
 
 export interface AuthRequest extends Request {
-  user?: AuthPayload;
+  auth?: AuthPayload;
 }
 
 export const authenticate = (
@@ -34,7 +34,7 @@ export const authenticate = (
 
     const decoded = jwt.verify(token, secret) as AuthPayload;
 
-    req.user = decoded;
+    req.auth = decoded;
 
     next();
   } catch (error) {
