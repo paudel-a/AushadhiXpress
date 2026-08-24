@@ -179,6 +179,7 @@ function MedicineDetailsModal({
   medicineId: number;
   onClose: () => void;
 }) {
+  const { addToCart } = useCart();
   const [medicine, setMedicine] = useState<Medicine | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

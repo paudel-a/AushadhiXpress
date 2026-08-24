@@ -13,7 +13,10 @@ import Profile from "./pages/Profile";
 import CategoriesPage from "./pages/CategoriesPage";
 import MedicinesAdminPage from "./pages/admin/MedicinesAdminPage";
 import MedicinePage from "./pages/MedicinePage";
+import CartIcon from "./components/CartIcon";
 import { CartProvider } from "./context/CartContext";
+import CartPage from "./pages/CartPage";
+
 function Home() {
   return (
     <>
@@ -32,21 +35,23 @@ function Home() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/auth/google/success" element={<GoogleAuthSuccess />} />
-        <Route path="/categories" element={<CategoriesPage />} />
-        <Route path="/admin/medicines" element={<MedicinesAdminPage />} />
-        <Route path="/medicines" element={<MedicinePage />} />
-        <Route path="/cart" element={<CartProvider />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<div>Dashboard</div>} />
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth/google/success" element={<GoogleAuthSuccess />} />
+          <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/admin/medicines" element={<MedicinesAdminPage />} />
+          <Route path="/medicines" element={<MedicinePage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<div>Dashboard</div>} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

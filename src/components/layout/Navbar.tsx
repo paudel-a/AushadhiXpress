@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
-
+import CartIcon from "../CartIcon";
 function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -36,7 +36,9 @@ function Navbar() {
           </a>
         </li>
       </ul>
-
+      <div className="flex items-right gap-4">
+        <CartIcon />
+      </div>
       {/* Authentication */}
       {isAuthenticated ? (
         <div className="flex items-center gap-4">
