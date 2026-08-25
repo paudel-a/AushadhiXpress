@@ -16,7 +16,9 @@ import MedicinePage from "./pages/MedicinePage";
 import CartIcon from "./components/CartIcon";
 import { CartProvider } from "./context/CartContext";
 import CartPage from "./pages/CartPage";
-
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import OrderHistoryPage from "./pages/OrderHistoryPage";
 function Home() {
   return (
     <>
@@ -45,6 +47,12 @@ function App() {
           <Route path="/admin/medicines" element={<MedicinesAdminPage />} />
           <Route path="/medicines" element={<MedicinePage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/orders" element={<OrderHistoryPage />} />
+          <Route
+            path="/order-confirmation"
+            element={<OrderConfirmationPage />}
+          />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<div>Dashboard</div>} />
             <Route path="/profile" element={<Profile />} />
