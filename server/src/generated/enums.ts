@@ -25,3 +25,21 @@ export const PrescriptionStatus = {
 } as const
 
 export type PrescriptionStatus = (typeof PrescriptionStatus)[keyof typeof PrescriptionStatus]
+
+
+export const OrderStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const PaymentMethod = {
+  COD: 'COD',
+  ONLINE: 'ONLINE'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]

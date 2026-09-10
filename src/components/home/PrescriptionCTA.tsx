@@ -1,6 +1,9 @@
 import { FileUp, ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function PrescriptionCTA() {
+  const navigate = useNavigate();
+
   return (
     <section className="px-6 py-20">
       <div className="mx-auto max-w-7xl">
@@ -26,7 +29,10 @@ function PrescriptionCTA() {
               the medicines you need.
             </p>
 
-            <button className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-medium text-emerald-700 transition hover:bg-emerald-50">
+            <button
+              onClick={() => navigate("/prescriptions")}
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-medium text-emerald-700 transition hover:bg-emerald-50"
+            >
               <FileUp size={18} />
               Upload Prescription
             </button>

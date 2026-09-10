@@ -1,4 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
+import Prescriptions from "../../pages/Prescriptions";
 import CartIcon from "../CartIcon";
 function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -36,6 +37,12 @@ function Navbar() {
           </a>
         </li>
       </ul>
+      <li>
+        <a href="/prescriptions" className="transition hover:text-green-600">
+          Prescriptions
+        </a>
+      </li>
+
       <div className="flex items-right gap-4">
         <CartIcon />
       </div>

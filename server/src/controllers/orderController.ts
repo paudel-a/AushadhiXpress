@@ -69,6 +69,8 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
           shippingAddress,
           phone,
           paymentMethod: paymentMethod === "ONLINE" ? "ONLINE" : "COD",
+          latitude: Number(req.body.latitude),
+          longitude: Number(req.body.longitude),
           items: {
             create: orderItemsData,
           },

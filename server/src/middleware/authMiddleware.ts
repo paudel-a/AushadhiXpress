@@ -1,11 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+type UserRole = "CUSTOMER" | "ADMIN" | "PHARMACIST";
+
 interface AuthPayload {
   userId: number;
-  role: "CUSTOMER" | "ADMIN" | "PHARMACIST";
+  role: UserRole;
 }
 
+// Note: named `auth` (not `user`) to avoid colliding with the global
+// `Express.Request.user` type declared by @types/passport.
 export interface AuthRequest extends Request {
   auth?: AuthPayload;
 }
@@ -26,15 +30,53 @@ export const authenticate = (
 
     const token = authHeader.split(" ")[1];
 
+    if (!token) {
+      return res.status(401).json({
+        message: "Authentication token missing",
+      });
+    }
+
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
-      throw new Error("JWT_SECRET is not defined");
+      console.error("JWT_SECRET is not defined");
+
+      return res.status(500).json({
+        message: "Server configuration error",
+      });
     }
 
-    const decoded = jwt.verify(token, secret) as AuthPayload;
+    const decoded = jwt.verify(token, secret);
 
-    req.auth = decoded;
+    if (
+      typeof decoded !== "object" ||
+      decoded === null ||
+      !("userId" in decoded) ||
+      !("role" in decoded)
+    ) {
+      return res.status(401).json({
+        message: "Invalid token payload",
+      });
+    }
+
+    const payload = decoded as {
+      userId: unknown;
+      role: unknown;
+    };
+
+    if (
+      typeof payload.userId !== "number" ||
+      !["CUSTOMER", "ADMIN", "PHARMACIST"].includes(payload.role as string)
+    ) {
+      return res.status(401).json({
+        message: "Invalid token payload",
+      });
+    }
+
+    req.auth = {
+      userId: payload.userId,
+      role: payload.role as UserRole,
+    };
 
     next();
   } catch (error) {

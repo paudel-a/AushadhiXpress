@@ -37,3 +37,13 @@ export type Medicine = Prisma.MedicineModel
  * 
  */
 export type Prescription = Prisma.PrescriptionModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel

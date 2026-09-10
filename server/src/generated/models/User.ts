@@ -234,6 +234,7 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   prescriptions?: Prisma.PrescriptionListRelationFilter
   reviewedPrescriptions?: Prisma.PrescriptionListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -246,6 +247,7 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   prescriptions?: Prisma.PrescriptionOrderByRelationAggregateInput
   reviewedPrescriptions?: Prisma.PrescriptionOrderByRelationAggregateInput
+  orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -261,6 +263,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   prescriptions?: Prisma.PrescriptionListRelationFilter
   reviewedPrescriptions?: Prisma.PrescriptionListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -300,6 +303,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutUserInput
   reviewedPrescriptions?: Prisma.PrescriptionCreateNestedManyWithoutPharmacistInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -312,6 +316,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutUserInput
   reviewedPrescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutPharmacistInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -323,6 +328,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prescriptions?: Prisma.PrescriptionUpdateManyWithoutUserNestedInput
   reviewedPrescriptions?: Prisma.PrescriptionUpdateManyWithoutPharmacistNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -335,6 +341,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutUserNestedInput
   reviewedPrescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutPharmacistNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -464,6 +471,20 @@ export type UserUpdateOneWithoutReviewedPrescriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedPrescriptionsInput, Prisma.UserUpdateWithoutReviewedPrescriptionsInput>, Prisma.UserUncheckedUpdateWithoutReviewedPrescriptionsInput>
 }
 
+export type UserCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.UserUpsertWithoutOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+}
+
 export type UserCreateWithoutPrescriptionsInput = {
   name: string
   email: string
@@ -472,6 +493,7 @@ export type UserCreateWithoutPrescriptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviewedPrescriptions?: Prisma.PrescriptionCreateNestedManyWithoutPharmacistInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPrescriptionsInput = {
@@ -483,6 +505,7 @@ export type UserUncheckedCreateWithoutPrescriptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviewedPrescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutPharmacistInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPrescriptionsInput = {
@@ -498,6 +521,7 @@ export type UserCreateWithoutReviewedPrescriptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewedPrescriptionsInput = {
@@ -509,6 +533,7 @@ export type UserUncheckedCreateWithoutReviewedPrescriptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewedPrescriptionsInput = {
@@ -535,6 +560,7 @@ export type UserUpdateWithoutPrescriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedPrescriptions?: Prisma.PrescriptionUpdateManyWithoutPharmacistNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPrescriptionsInput = {
@@ -546,6 +572,7 @@ export type UserUncheckedUpdateWithoutPrescriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedPrescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutPharmacistNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutReviewedPrescriptionsInput = {
@@ -567,6 +594,7 @@ export type UserUpdateWithoutReviewedPrescriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prescriptions?: Prisma.PrescriptionUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedPrescriptionsInput = {
@@ -578,6 +606,69 @@ export type UserUncheckedUpdateWithoutReviewedPrescriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOrdersInput = {
+  name: string
+  email: string
+  password: string
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prescriptions?: Prisma.PrescriptionCreateNestedManyWithoutUserInput
+  reviewedPrescriptions?: Prisma.PrescriptionCreateNestedManyWithoutPharmacistInput
+}
+
+export type UserUncheckedCreateWithoutOrdersInput = {
+  id?: number
+  name: string
+  email: string
+  password: string
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutUserInput
+  reviewedPrescriptions?: Prisma.PrescriptionUncheckedCreateNestedManyWithoutPharmacistInput
+}
+
+export type UserCreateOrConnectWithoutOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+}
+
+export type UserUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+}
+
+export type UserUpdateWithoutOrdersInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prescriptions?: Prisma.PrescriptionUpdateManyWithoutUserNestedInput
+  reviewedPrescriptions?: Prisma.PrescriptionUpdateManyWithoutPharmacistNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOrdersInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutUserNestedInput
+  reviewedPrescriptions?: Prisma.PrescriptionUncheckedUpdateManyWithoutPharmacistNestedInput
 }
 
 
@@ -588,11 +679,13 @@ export type UserUncheckedUpdateWithoutReviewedPrescriptionsInput = {
 export type UserCountOutputType = {
   prescriptions: number
   reviewedPrescriptions: number
+  orders: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prescriptions?: boolean | UserCountOutputTypeCountPrescriptionsArgs
   reviewedPrescriptions?: boolean | UserCountOutputTypeCountReviewedPrescriptionsArgs
+  orders?: boolean | UserCountOutputTypeCountOrdersArgs
 }
 
 /**
@@ -619,6 +712,13 @@ export type UserCountOutputTypeCountReviewedPrescriptionsArgs<ExtArgs extends ru
   where?: Prisma.PrescriptionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -630,6 +730,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   prescriptions?: boolean | Prisma.User$prescriptionsArgs<ExtArgs>
   reviewedPrescriptions?: boolean | Prisma.User$reviewedPrescriptionsArgs<ExtArgs>
+  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -667,6 +768,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prescriptions?: boolean | Prisma.User$prescriptionsArgs<ExtArgs>
   reviewedPrescriptions?: boolean | Prisma.User$reviewedPrescriptionsArgs<ExtArgs>
+  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -677,6 +779,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
     reviewedPrescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
+    orders: Prisma.$OrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1082,6 +1185,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   prescriptions<T extends Prisma.User$prescriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedPrescriptions<T extends Prisma.User$reviewedPrescriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedPrescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1556,6 +1660,30 @@ export type User$reviewedPrescriptionsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.PrescriptionScalarFieldEnum | Prisma.PrescriptionScalarFieldEnum[]
+}
+
+/**
+ * User.orders
+ */
+export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**
