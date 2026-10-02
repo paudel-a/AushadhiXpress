@@ -65,6 +65,7 @@ model Prescription {
   userId          Int
   pharmacistId    Int?
   documentUrl     String
+  publicId        String?
   status          PrescriptionStatus @default(PENDING)
   rejectionReason String?
 

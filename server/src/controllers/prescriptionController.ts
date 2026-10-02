@@ -1,46 +1,64 @@
 import { Response } from "express";
 import prisma from "../lib/prisma.js";
-import { AuthRequest } from "../middleware/authMiddleware.js";
+import { AuthRequest } from "../middleware/authMiddleware";
+import {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+} from "../utils/cloudinaryUpload";
 
 const MAX_REJECTION_REASON_LENGTH = 1000;
-
-function isValidHttpUrl(value: string): boolean {
-  try {
-    const parsed = new URL(value);
-    return parsed.protocol === "http:" || parsed.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
+const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "application/pdf"];
 
 export const createPrescription = async (req: AuthRequest, res: Response) => {
-  try {
-    const { documentUrl } = req.body;
-    const trimmedUrl =
-      typeof documentUrl === "string" ? documentUrl.trim() : "";
+  let publicId: string | undefined;
 
-    if (!trimmedUrl || !isValidHttpUrl(trimmedUrl)) {
+  try {
+    if (!req.auth) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (!req.file) {
       return res.status(400).json({
-        message: "A valid prescription document URL is required",
+        message: "Prescription file is required",
       });
     }
 
+    if (!ALLOWED_FILE_TYPES.includes(req.file.mimetype)) {
+      return res.status(415).json({
+        message: "Only JPEG, PNG, or PDF files are allowed",
+      });
+    }
+
+    const uploadedFile = await uploadToCloudinary(
+      req.file.buffer,
+      req.file.mimetype,
+    );
+    publicId = uploadedFile.public_id;
+
     const prescription = await prisma.prescription.create({
       data: {
-        userId: req.auth!.userId,
-        documentUrl: trimmedUrl,
+        userId: req.auth.userId,
+        documentUrl: uploadedFile.secure_url,
+        publicId: uploadedFile.public_id,
       },
     });
 
     return res.status(201).json({
-      message: "Prescription submitted successfully",
+      message: "Prescription uploaded successfully",
       prescription,
     });
   } catch (error) {
     console.error("Create prescription error:", error);
 
+    // Avoid orphaned files if the DB write failed after a successful upload.
+    if (publicId) {
+      await deleteFromCloudinary(publicId).catch((e) =>
+        console.error("Cloudinary cleanup failed:", e),
+      );
+    }
+
     return res.status(500).json({
-      message: "Failed to submit prescription",
+      message: "Failed to upload prescription",
     });
   }
 };

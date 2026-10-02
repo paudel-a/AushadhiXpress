@@ -43,6 +43,7 @@ export type PrescriptionMinAggregateOutputType = {
   userId: number | null
   pharmacistId: number | null
   documentUrl: string | null
+  publicId: string | null
   status: $Enums.PrescriptionStatus | null
   rejectionReason: string | null
   createdAt: Date | null
@@ -54,6 +55,7 @@ export type PrescriptionMaxAggregateOutputType = {
   userId: number | null
   pharmacistId: number | null
   documentUrl: string | null
+  publicId: string | null
   status: $Enums.PrescriptionStatus | null
   rejectionReason: string | null
   createdAt: Date | null
@@ -65,6 +67,7 @@ export type PrescriptionCountAggregateOutputType = {
   userId: number
   pharmacistId: number
   documentUrl: number
+  publicId: number
   status: number
   rejectionReason: number
   createdAt: number
@@ -90,6 +93,7 @@ export type PrescriptionMinAggregateInputType = {
   userId?: true
   pharmacistId?: true
   documentUrl?: true
+  publicId?: true
   status?: true
   rejectionReason?: true
   createdAt?: true
@@ -101,6 +105,7 @@ export type PrescriptionMaxAggregateInputType = {
   userId?: true
   pharmacistId?: true
   documentUrl?: true
+  publicId?: true
   status?: true
   rejectionReason?: true
   createdAt?: true
@@ -112,6 +117,7 @@ export type PrescriptionCountAggregateInputType = {
   userId?: true
   pharmacistId?: true
   documentUrl?: true
+  publicId?: true
   status?: true
   rejectionReason?: true
   createdAt?: true
@@ -210,6 +216,7 @@ export type PrescriptionGroupByOutputType = {
   userId: number
   pharmacistId: number | null
   documentUrl: string
+  publicId: string | null
   status: $Enums.PrescriptionStatus
   rejectionReason: string | null
   createdAt: Date
@@ -244,6 +251,7 @@ export type PrescriptionWhereInput = {
   userId?: Prisma.IntFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringFilter<"Prescription"> | string
+  publicId?: Prisma.StringNullableFilter<"Prescription"> | string | null
   status?: Prisma.EnumPrescriptionStatusFilter<"Prescription"> | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.StringNullableFilter<"Prescription"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
@@ -257,6 +265,7 @@ export type PrescriptionOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
+  publicId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -273,6 +282,7 @@ export type PrescriptionWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.IntFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringFilter<"Prescription"> | string
+  publicId?: Prisma.StringNullableFilter<"Prescription"> | string | null
   status?: Prisma.EnumPrescriptionStatusFilter<"Prescription"> | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.StringNullableFilter<"Prescription"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
@@ -286,6 +296,7 @@ export type PrescriptionOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
+  publicId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -305,6 +316,7 @@ export type PrescriptionScalarWhereWithAggregatesInput = {
   userId?: Prisma.IntWithAggregatesFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableWithAggregatesFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringWithAggregatesFilter<"Prescription"> | string
+  publicId?: Prisma.StringNullableWithAggregatesFilter<"Prescription"> | string | null
   status?: Prisma.EnumPrescriptionStatusWithAggregatesFilter<"Prescription"> | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"Prescription"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Prescription"> | Date | string
@@ -313,6 +325,7 @@ export type PrescriptionScalarWhereWithAggregatesInput = {
 
 export type PrescriptionCreateInput = {
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -326,6 +339,7 @@ export type PrescriptionUncheckedCreateInput = {
   userId: number
   pharmacistId?: number | null
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -334,6 +348,7 @@ export type PrescriptionUncheckedCreateInput = {
 
 export type PrescriptionUpdateInput = {
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -347,6 +362,7 @@ export type PrescriptionUncheckedUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -358,6 +374,7 @@ export type PrescriptionCreateManyInput = {
   userId: number
   pharmacistId?: number | null
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -366,6 +383,7 @@ export type PrescriptionCreateManyInput = {
 
 export type PrescriptionUpdateManyMutationInput = {
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -377,6 +395,7 @@ export type PrescriptionUncheckedUpdateManyInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -398,6 +417,7 @@ export type PrescriptionCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
+  publicId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -415,6 +435,7 @@ export type PrescriptionMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
+  publicId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -426,6 +447,7 @@ export type PrescriptionMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
+  publicId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -536,6 +558,7 @@ export type NullableIntFieldUpdateOperationsInput = {
 
 export type PrescriptionCreateWithoutUserInput = {
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -547,6 +570,7 @@ export type PrescriptionUncheckedCreateWithoutUserInput = {
   id?: number
   pharmacistId?: number | null
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -565,6 +589,7 @@ export type PrescriptionCreateManyUserInputEnvelope = {
 
 export type PrescriptionCreateWithoutPharmacistInput = {
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -576,6 +601,7 @@ export type PrescriptionUncheckedCreateWithoutPharmacistInput = {
   id?: number
   userId: number
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -616,6 +642,7 @@ export type PrescriptionScalarWhereInput = {
   userId?: Prisma.IntFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringFilter<"Prescription"> | string
+  publicId?: Prisma.StringNullableFilter<"Prescription"> | string | null
   status?: Prisma.EnumPrescriptionStatusFilter<"Prescription"> | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.StringNullableFilter<"Prescription"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
@@ -642,6 +669,7 @@ export type PrescriptionCreateManyUserInput = {
   id?: number
   pharmacistId?: number | null
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -652,6 +680,7 @@ export type PrescriptionCreateManyPharmacistInput = {
   id?: number
   userId: number
   documentUrl: string
+  publicId?: string | null
   status?: $Enums.PrescriptionStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -660,6 +689,7 @@ export type PrescriptionCreateManyPharmacistInput = {
 
 export type PrescriptionUpdateWithoutUserInput = {
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -671,6 +701,7 @@ export type PrescriptionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -681,6 +712,7 @@ export type PrescriptionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -689,6 +721,7 @@ export type PrescriptionUncheckedUpdateManyWithoutUserInput = {
 
 export type PrescriptionUpdateWithoutPharmacistInput = {
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -700,6 +733,7 @@ export type PrescriptionUncheckedUpdateWithoutPharmacistInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -710,6 +744,7 @@ export type PrescriptionUncheckedUpdateManyWithoutPharmacistInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -723,6 +758,7 @@ export type PrescriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   userId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
+  publicId?: boolean
   status?: boolean
   rejectionReason?: boolean
   createdAt?: boolean
@@ -736,6 +772,7 @@ export type PrescriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
+  publicId?: boolean
   status?: boolean
   rejectionReason?: boolean
   createdAt?: boolean
@@ -749,6 +786,7 @@ export type PrescriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
+  publicId?: boolean
   status?: boolean
   rejectionReason?: boolean
   createdAt?: boolean
@@ -762,13 +800,14 @@ export type PrescriptionSelectScalar = {
   userId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
+  publicId?: boolean
   status?: boolean
   rejectionReason?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PrescriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "pharmacistId" | "documentUrl" | "status" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["prescription"]>
+export type PrescriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "pharmacistId" | "documentUrl" | "publicId" | "status" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["prescription"]>
 export type PrescriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
@@ -793,6 +832,7 @@ export type $PrescriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     userId: number
     pharmacistId: number | null
     documentUrl: string
+    publicId: string | null
     status: $Enums.PrescriptionStatus
     rejectionReason: string | null
     createdAt: Date
@@ -1226,6 +1266,7 @@ export interface PrescriptionFieldRefs {
   readonly userId: Prisma.FieldRef<"Prescription", 'Int'>
   readonly pharmacistId: Prisma.FieldRef<"Prescription", 'Int'>
   readonly documentUrl: Prisma.FieldRef<"Prescription", 'String'>
+  readonly publicId: Prisma.FieldRef<"Prescription", 'String'>
   readonly status: Prisma.FieldRef<"Prescription", 'PrescriptionStatus'>
   readonly rejectionReason: Prisma.FieldRef<"Prescription", 'String'>
   readonly createdAt: Prisma.FieldRef<"Prescription", 'DateTime'>

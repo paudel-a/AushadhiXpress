@@ -120,6 +120,7 @@ export const PrescriptionScalarFieldEnum = {
   userId: 'userId',
   pharmacistId: 'pharmacistId',
   documentUrl: 'documentUrl',
+  publicId: 'publicId',
   status: 'status',
   rejectionReason: 'rejectionReason',
   createdAt: 'createdAt',
