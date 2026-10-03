@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FileUp, Clock3, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 type PrescriptionStatus = "PENDING" | "APPROVED" | "REJECTED";
@@ -11,20 +11,24 @@ interface Prescription {
   createdAt: string;
 }
 
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "application/pdf"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
 function Prescriptions() {
-  const [documentUrl, setDocumentUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const token = localStorage.getItem("token");
 
   const fetchPrescriptions = async () => {
     try {
       setLoading(true);
-      setError("");
 
       const response = await fetch(
         "http://localhost:5000/api/prescriptions/my",
@@ -55,11 +59,39 @@ function Prescriptions() {
     fetchPrescriptions();
   }, []);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    setMessage("");
+
+    if (!file) {
+      setSelectedFile(null);
+      return;
+    }
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError("Only JPG, PNG, and PDF files are allowed.");
+      setSelectedFile(null);
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setError("File size must be less than 5 MB.");
+      setSelectedFile(null);
+      e.target.value = "";
+      return;
+    }
+
+    setError("");
+    setSelectedFile(file);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!documentUrl.trim()) {
-      setError("Please enter a prescription document URL.");
+    if (!selectedFile) {
+      setError("Please select a prescription file.");
       return;
     }
 
@@ -68,30 +100,35 @@ function Prescriptions() {
       setError("");
       setMessage("");
 
+      const formData = new FormData();
+      formData.append("prescription", selectedFile); // must match upload.single("prescription")
+
+      // Don't set Content-Type: the browser adds the multipart boundary itself.
       const response = await fetch("http://localhost:5000/api/prescriptions", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          documentUrl: documentUrl.trim(),
-        }),
+        body: formData,
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to submit prescription");
+        throw new Error(data.message || "Failed to upload prescription");
       }
 
-      setMessage("Prescription submitted successfully.");
-      setDocumentUrl("");
+      setMessage("Prescription uploaded successfully.");
+      setSelectedFile(null);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
 
       await fetchPrescriptions();
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to submit prescription",
+        err instanceof Error ? err.message : "Failed to upload prescription",
       );
     } finally {
       setSubmitting(false);
@@ -132,11 +169,11 @@ function Prescriptions() {
           </h1>
 
           <p className="mt-2 text-slate-600">
-            Submit your prescription and track its approval status.
+            Upload your prescription and track its approval status.
           </p>
         </div>
 
-        {/* Submit Prescription */}
+        {/* Upload Prescription */}
         <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
           <div className="mb-6 flex items-center gap-3">
             <div className="rounded-xl bg-emerald-100 p-3 text-emerald-600">
@@ -145,42 +182,51 @@ function Prescriptions() {
 
             <div>
               <h2 className="text-xl font-semibold text-slate-900">
-                Submit Prescription
+                Upload Prescription
               </h2>
 
               <p className="text-sm text-slate-500">
-                Enter the URL of your prescription document.
+                JPG, PNG or PDF, maximum 5 MB.
               </p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit}>
             <label className="mb-2 block text-sm font-medium text-slate-700">
-              Prescription Document URL
+              Prescription File
             </label>
 
             <input
-              type="url"
-              value={documentUrl}
-              onChange={(e) => setDocumentUrl(e.target.value)}
-              placeholder="https://example.com/prescription.pdf"
-              className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              ref={fileInputRef}
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              onChange={handleFileChange}
+              className="block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-600 outline-none transition file:mr-4 file:rounded-md file:border-0 file:bg-emerald-50 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-emerald-700 hover:file:bg-emerald-100 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
             />
+
+            {selectedFile && (
+              <p className="mt-3 text-sm text-slate-600">
+                Selected:{" "}
+                <span className="font-medium text-slate-900">
+                  {selectedFile.name}
+                </span>
+              </p>
+            )}
 
             <button
               type="submit"
-              disabled={submitting}
+              disabled={!selectedFile || submitting}
               className="mt-4 inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
-                  Submitting...
+                  Uploading...
                 </>
               ) : (
                 <>
                   <FileUp size={18} />
-                  Submit Prescription
+                  Upload Prescription
                 </>
               )}
             </button>
@@ -218,7 +264,7 @@ function Prescriptions() {
               </h3>
 
               <p className="mt-1 text-sm text-slate-500">
-                Your submitted prescriptions will appear here.
+                Your uploaded prescriptions will appear here.
               </p>
             </div>
           ) : (

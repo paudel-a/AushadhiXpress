@@ -2,9 +2,15 @@ import type { Response } from "express";
 import prisma from "../lib/prisma.js";
 import type { AuthRequest } from "../middleware/authMiddleware.js";
 
+const parseCoordinate = (value: unknown): number | null => {
+  if (value === undefined || value === null || value === "") return null;
+  const num = Number(value);
+  return Number.isFinite(num) ? num : null;
+};
+
 export const createOrder = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.auth?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Authentication required" });
     }
@@ -29,6 +35,9 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
       quantity: number;
       price: number;
     }[] = [];
+
+    // Looked up at most once, and only if an item needs a prescription
+    let hasApprovedPrescription: boolean | null = null;
 
     for (const item of items) {
       const medicineId = Number(item.medicineId);
@@ -56,8 +65,26 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
         });
       }
 
-      totalAmount += medicine.price * quantity;
-      orderItemsData.push({ medicineId, quantity, price: medicine.price });
+      // Prescription check
+      if (medicine.requiresPrescription) {
+        if (hasApprovedPrescription === null) {
+          const approved = await prisma.prescription.findFirst({
+            where: { userId, status: "APPROVED" },
+            select: { id: true },
+          });
+          hasApprovedPrescription = approved !== null;
+        }
+
+        if (!hasApprovedPrescription) {
+          return res.status(403).json({
+            message: `${medicine.name} requires an approved prescription before it can be ordered.`,
+          });
+        }
+      }
+
+      const price = Number(medicine.price);
+      totalAmount += price * quantity;
+      orderItemsData.push({ medicineId, quantity, price });
     }
 
     // Create order + decrement stock in a single transaction
@@ -69,8 +96,8 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
           shippingAddress,
           phone,
           paymentMethod: paymentMethod === "ONLINE" ? "ONLINE" : "COD",
-          latitude: Number(req.body.latitude),
-          longitude: Number(req.body.longitude),
+          latitude: parseCoordinate(req.body.latitude),
+          longitude: parseCoordinate(req.body.longitude),
           items: {
             create: orderItemsData,
           },
@@ -97,7 +124,7 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
 
 export const getMyOrders = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.auth?.userId;
     if (!userId) {
       return res.status(401).json({ message: "Authentication required" });
     }

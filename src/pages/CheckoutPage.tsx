@@ -87,39 +87,43 @@ function CheckoutPage() {
     try {
       const response = await fetch("http://localhost:5000/api/orders", {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-
         body: JSON.stringify({
           items: items.map((item) => ({
             medicineId: item.id,
             quantity: item.quantity,
           })),
-
           shippingAddress: shippingAddress.trim(),
           phone: phone.trim(),
           paymentMethod,
-
           latitude,
           longitude,
         }),
       });
 
+      const data = await response.json().catch(() => null);
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        // Prescription-related error
+        if (response.status === 403) {
+          throw new Error(
+            data?.message ||
+              "An approved prescription is required to order this medicine.",
+          );
+        }
 
-        throw new Error(errorData?.message || "Failed to place order");
+        throw new Error(data?.message || "Failed to place order");
       }
-
-      const order = await response.json();
 
       clearCart();
 
       navigate("/order-confirmation", {
-        state: { order },
+        state: {
+          order: data,
+        },
       });
     } catch (err) {
       console.error("Place order error:", err);
