@@ -141,3 +141,102 @@ export const getMyOrders = async (req: AuthRequest, res: Response) => {
     return res.status(500).json({ message: "Failed to fetch orders" });
   }
 };
+
+export const getAllOrders = async (_req: AuthRequest, res: Response) => {
+  try {
+    const orders = await prisma.order.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            medicine: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error("Get all orders error:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch orders",
+    });
+  }
+};
+
+export const updateOrderStatus = async (req: AuthRequest, res: Response) => {
+  try {
+    const orderId = Number(req.params.id);
+    const { status } = req.body;
+
+    if (!Number.isInteger(orderId) || orderId <= 0) {
+      return res.status(400).json({
+        message: "Invalid order ID",
+      });
+    }
+
+    const allowedStatuses = ["PENDING", "CONFIRMED", "DELIVERED", "CANCELLED"];
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid order status",
+      });
+    }
+
+    const existingOrder = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (!existingOrder) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    const updatedOrder = await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            medicine: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: "Order status updated successfully",
+      order: updatedOrder,
+    });
+  } catch (error) {
+    console.error("Update order status error:", error);
+
+    return res.status(500).json({
+      message: "Failed to update order status",
+    });
+  }
+};

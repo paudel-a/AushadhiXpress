@@ -21,6 +21,7 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import Prescriptions from "./pages/Prescriptions";
 import PharmacistPrescriptions from "./pages/PharmacistPrescriptions";
+import AdminOrdersPage from "./components/admin/AdminOrdersPage";
 function Home() {
   return (
     <>
@@ -59,6 +60,7 @@ function App() {
             <Route path="/dashboard" element={<div>Dashboard</div>} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/prescriptions" element={<Prescriptions />} />
+            <Route path="/admin/orders" element={<AdminOrdersPage />} />
             <Route
               path="/pharmacist/prescriptions"
               element={<PharmacistPrescriptions />}
