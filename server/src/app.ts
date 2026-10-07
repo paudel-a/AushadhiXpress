@@ -7,11 +7,13 @@ import orderRoutes from "./routes/orderRoutes.js";
 import medicineRoutes from "./routes/medicineRoutes.js";
 import prescriptionRoutes from "./routes/prescriptionRoutes.js";
 import passport from "./config/passport.js";
+import adminRoutes from "./routes/adminRoutes.js";
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api/categories", categoryRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/auth", authRoutes);
 app.use(passport.initialize());
