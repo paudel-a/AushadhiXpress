@@ -29,18 +29,21 @@ export type AggregatePrescription = {
 export type PrescriptionAvgAggregateOutputType = {
   id: number | null
   userId: number | null
+  medicineId: number | null
   pharmacistId: number | null
 }
 
 export type PrescriptionSumAggregateOutputType = {
   id: number | null
   userId: number | null
+  medicineId: number | null
   pharmacistId: number | null
 }
 
 export type PrescriptionMinAggregateOutputType = {
   id: number | null
   userId: number | null
+  medicineId: number | null
   pharmacistId: number | null
   documentUrl: string | null
   publicId: string | null
@@ -53,6 +56,7 @@ export type PrescriptionMinAggregateOutputType = {
 export type PrescriptionMaxAggregateOutputType = {
   id: number | null
   userId: number | null
+  medicineId: number | null
   pharmacistId: number | null
   documentUrl: string | null
   publicId: string | null
@@ -65,6 +69,7 @@ export type PrescriptionMaxAggregateOutputType = {
 export type PrescriptionCountAggregateOutputType = {
   id: number
   userId: number
+  medicineId: number
   pharmacistId: number
   documentUrl: number
   publicId: number
@@ -79,18 +84,21 @@ export type PrescriptionCountAggregateOutputType = {
 export type PrescriptionAvgAggregateInputType = {
   id?: true
   userId?: true
+  medicineId?: true
   pharmacistId?: true
 }
 
 export type PrescriptionSumAggregateInputType = {
   id?: true
   userId?: true
+  medicineId?: true
   pharmacistId?: true
 }
 
 export type PrescriptionMinAggregateInputType = {
   id?: true
   userId?: true
+  medicineId?: true
   pharmacistId?: true
   documentUrl?: true
   publicId?: true
@@ -103,6 +111,7 @@ export type PrescriptionMinAggregateInputType = {
 export type PrescriptionMaxAggregateInputType = {
   id?: true
   userId?: true
+  medicineId?: true
   pharmacistId?: true
   documentUrl?: true
   publicId?: true
@@ -115,6 +124,7 @@ export type PrescriptionMaxAggregateInputType = {
 export type PrescriptionCountAggregateInputType = {
   id?: true
   userId?: true
+  medicineId?: true
   pharmacistId?: true
   documentUrl?: true
   publicId?: true
@@ -214,6 +224,7 @@ export type PrescriptionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type PrescriptionGroupByOutputType = {
   id: number
   userId: number
+  medicineId: number
   pharmacistId: number | null
   documentUrl: string
   publicId: string | null
@@ -249,6 +260,7 @@ export type PrescriptionWhereInput = {
   NOT?: Prisma.PrescriptionWhereInput | Prisma.PrescriptionWhereInput[]
   id?: Prisma.IntFilter<"Prescription"> | number
   userId?: Prisma.IntFilter<"Prescription"> | number
+  medicineId?: Prisma.IntFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringFilter<"Prescription"> | string
   publicId?: Prisma.StringNullableFilter<"Prescription"> | string | null
@@ -257,12 +269,14 @@ export type PrescriptionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  medicine?: Prisma.XOR<Prisma.MedicineScalarRelationFilter, Prisma.MedicineWhereInput>
   pharmacist?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type PrescriptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   publicId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -271,6 +285,7 @@ export type PrescriptionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  medicine?: Prisma.MedicineOrderByWithRelationInput
   pharmacist?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -280,6 +295,7 @@ export type PrescriptionWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PrescriptionWhereInput[]
   NOT?: Prisma.PrescriptionWhereInput | Prisma.PrescriptionWhereInput[]
   userId?: Prisma.IntFilter<"Prescription"> | number
+  medicineId?: Prisma.IntFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringFilter<"Prescription"> | string
   publicId?: Prisma.StringNullableFilter<"Prescription"> | string | null
@@ -288,12 +304,14 @@ export type PrescriptionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Prescription"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  medicine?: Prisma.XOR<Prisma.MedicineScalarRelationFilter, Prisma.MedicineWhereInput>
   pharmacist?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type PrescriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   publicId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -314,6 +332,7 @@ export type PrescriptionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PrescriptionScalarWhereWithAggregatesInput | Prisma.PrescriptionScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Prescription"> | number
   userId?: Prisma.IntWithAggregatesFilter<"Prescription"> | number
+  medicineId?: Prisma.IntWithAggregatesFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableWithAggregatesFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringWithAggregatesFilter<"Prescription"> | string
   publicId?: Prisma.StringNullableWithAggregatesFilter<"Prescription"> | string | null
@@ -331,12 +350,14 @@ export type PrescriptionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPrescriptionsInput
+  medicine: Prisma.MedicineCreateNestedOneWithoutPrescriptionsInput
   pharmacist?: Prisma.UserCreateNestedOneWithoutReviewedPrescriptionsInput
 }
 
 export type PrescriptionUncheckedCreateInput = {
   id?: number
   userId: number
+  medicineId: number
   pharmacistId?: number | null
   documentUrl: string
   publicId?: string | null
@@ -354,12 +375,14 @@ export type PrescriptionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPrescriptionsNestedInput
+  medicine?: Prisma.MedicineUpdateOneRequiredWithoutPrescriptionsNestedInput
   pharmacist?: Prisma.UserUpdateOneWithoutReviewedPrescriptionsNestedInput
 }
 
 export type PrescriptionUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  medicineId?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -372,6 +395,7 @@ export type PrescriptionUncheckedUpdateInput = {
 export type PrescriptionCreateManyInput = {
   id?: number
   userId: number
+  medicineId: number
   pharmacistId?: number | null
   documentUrl: string
   publicId?: string | null
@@ -393,6 +417,7 @@ export type PrescriptionUpdateManyMutationInput = {
 export type PrescriptionUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  medicineId?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -415,6 +440,7 @@ export type PrescriptionOrderByRelationAggregateInput = {
 export type PrescriptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
@@ -427,12 +453,14 @@ export type PrescriptionCountOrderByAggregateInput = {
 export type PrescriptionAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
 }
 
 export type PrescriptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
@@ -445,6 +473,7 @@ export type PrescriptionMaxOrderByAggregateInput = {
 export type PrescriptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
@@ -457,6 +486,7 @@ export type PrescriptionMinOrderByAggregateInput = {
 export type PrescriptionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  medicineId?: Prisma.SortOrder
   pharmacistId?: Prisma.SortOrder
 }
 
@@ -544,6 +574,48 @@ export type PrescriptionUncheckedUpdateManyWithoutPharmacistNestedInput = {
   deleteMany?: Prisma.PrescriptionScalarWhereInput | Prisma.PrescriptionScalarWhereInput[]
 }
 
+export type PrescriptionCreateNestedManyWithoutMedicineInput = {
+  create?: Prisma.XOR<Prisma.PrescriptionCreateWithoutMedicineInput, Prisma.PrescriptionUncheckedCreateWithoutMedicineInput> | Prisma.PrescriptionCreateWithoutMedicineInput[] | Prisma.PrescriptionUncheckedCreateWithoutMedicineInput[]
+  connectOrCreate?: Prisma.PrescriptionCreateOrConnectWithoutMedicineInput | Prisma.PrescriptionCreateOrConnectWithoutMedicineInput[]
+  createMany?: Prisma.PrescriptionCreateManyMedicineInputEnvelope
+  connect?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+}
+
+export type PrescriptionUncheckedCreateNestedManyWithoutMedicineInput = {
+  create?: Prisma.XOR<Prisma.PrescriptionCreateWithoutMedicineInput, Prisma.PrescriptionUncheckedCreateWithoutMedicineInput> | Prisma.PrescriptionCreateWithoutMedicineInput[] | Prisma.PrescriptionUncheckedCreateWithoutMedicineInput[]
+  connectOrCreate?: Prisma.PrescriptionCreateOrConnectWithoutMedicineInput | Prisma.PrescriptionCreateOrConnectWithoutMedicineInput[]
+  createMany?: Prisma.PrescriptionCreateManyMedicineInputEnvelope
+  connect?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+}
+
+export type PrescriptionUpdateManyWithoutMedicineNestedInput = {
+  create?: Prisma.XOR<Prisma.PrescriptionCreateWithoutMedicineInput, Prisma.PrescriptionUncheckedCreateWithoutMedicineInput> | Prisma.PrescriptionCreateWithoutMedicineInput[] | Prisma.PrescriptionUncheckedCreateWithoutMedicineInput[]
+  connectOrCreate?: Prisma.PrescriptionCreateOrConnectWithoutMedicineInput | Prisma.PrescriptionCreateOrConnectWithoutMedicineInput[]
+  upsert?: Prisma.PrescriptionUpsertWithWhereUniqueWithoutMedicineInput | Prisma.PrescriptionUpsertWithWhereUniqueWithoutMedicineInput[]
+  createMany?: Prisma.PrescriptionCreateManyMedicineInputEnvelope
+  set?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  disconnect?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  delete?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  connect?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  update?: Prisma.PrescriptionUpdateWithWhereUniqueWithoutMedicineInput | Prisma.PrescriptionUpdateWithWhereUniqueWithoutMedicineInput[]
+  updateMany?: Prisma.PrescriptionUpdateManyWithWhereWithoutMedicineInput | Prisma.PrescriptionUpdateManyWithWhereWithoutMedicineInput[]
+  deleteMany?: Prisma.PrescriptionScalarWhereInput | Prisma.PrescriptionScalarWhereInput[]
+}
+
+export type PrescriptionUncheckedUpdateManyWithoutMedicineNestedInput = {
+  create?: Prisma.XOR<Prisma.PrescriptionCreateWithoutMedicineInput, Prisma.PrescriptionUncheckedCreateWithoutMedicineInput> | Prisma.PrescriptionCreateWithoutMedicineInput[] | Prisma.PrescriptionUncheckedCreateWithoutMedicineInput[]
+  connectOrCreate?: Prisma.PrescriptionCreateOrConnectWithoutMedicineInput | Prisma.PrescriptionCreateOrConnectWithoutMedicineInput[]
+  upsert?: Prisma.PrescriptionUpsertWithWhereUniqueWithoutMedicineInput | Prisma.PrescriptionUpsertWithWhereUniqueWithoutMedicineInput[]
+  createMany?: Prisma.PrescriptionCreateManyMedicineInputEnvelope
+  set?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  disconnect?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  delete?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  connect?: Prisma.PrescriptionWhereUniqueInput | Prisma.PrescriptionWhereUniqueInput[]
+  update?: Prisma.PrescriptionUpdateWithWhereUniqueWithoutMedicineInput | Prisma.PrescriptionUpdateWithWhereUniqueWithoutMedicineInput[]
+  updateMany?: Prisma.PrescriptionUpdateManyWithWhereWithoutMedicineInput | Prisma.PrescriptionUpdateManyWithWhereWithoutMedicineInput[]
+  deleteMany?: Prisma.PrescriptionScalarWhereInput | Prisma.PrescriptionScalarWhereInput[]
+}
+
 export type EnumPrescriptionStatusFieldUpdateOperationsInput = {
   set?: $Enums.PrescriptionStatus
 }
@@ -563,11 +635,13 @@ export type PrescriptionCreateWithoutUserInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  medicine: Prisma.MedicineCreateNestedOneWithoutPrescriptionsInput
   pharmacist?: Prisma.UserCreateNestedOneWithoutReviewedPrescriptionsInput
 }
 
 export type PrescriptionUncheckedCreateWithoutUserInput = {
   id?: number
+  medicineId: number
   pharmacistId?: number | null
   documentUrl: string
   publicId?: string | null
@@ -595,11 +669,13 @@ export type PrescriptionCreateWithoutPharmacistInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPrescriptionsInput
+  medicine: Prisma.MedicineCreateNestedOneWithoutPrescriptionsInput
 }
 
 export type PrescriptionUncheckedCreateWithoutPharmacistInput = {
   id?: number
   userId: number
+  medicineId: number
   documentUrl: string
   publicId?: string | null
   status?: $Enums.PrescriptionStatus
@@ -640,6 +716,7 @@ export type PrescriptionScalarWhereInput = {
   NOT?: Prisma.PrescriptionScalarWhereInput | Prisma.PrescriptionScalarWhereInput[]
   id?: Prisma.IntFilter<"Prescription"> | number
   userId?: Prisma.IntFilter<"Prescription"> | number
+  medicineId?: Prisma.IntFilter<"Prescription"> | number
   pharmacistId?: Prisma.IntNullableFilter<"Prescription"> | number | null
   documentUrl?: Prisma.StringFilter<"Prescription"> | string
   publicId?: Prisma.StringNullableFilter<"Prescription"> | string | null
@@ -665,8 +742,58 @@ export type PrescriptionUpdateManyWithWhereWithoutPharmacistInput = {
   data: Prisma.XOR<Prisma.PrescriptionUpdateManyMutationInput, Prisma.PrescriptionUncheckedUpdateManyWithoutPharmacistInput>
 }
 
+export type PrescriptionCreateWithoutMedicineInput = {
+  documentUrl: string
+  publicId?: string | null
+  status?: $Enums.PrescriptionStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPrescriptionsInput
+  pharmacist?: Prisma.UserCreateNestedOneWithoutReviewedPrescriptionsInput
+}
+
+export type PrescriptionUncheckedCreateWithoutMedicineInput = {
+  id?: number
+  userId: number
+  pharmacistId?: number | null
+  documentUrl: string
+  publicId?: string | null
+  status?: $Enums.PrescriptionStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PrescriptionCreateOrConnectWithoutMedicineInput = {
+  where: Prisma.PrescriptionWhereUniqueInput
+  create: Prisma.XOR<Prisma.PrescriptionCreateWithoutMedicineInput, Prisma.PrescriptionUncheckedCreateWithoutMedicineInput>
+}
+
+export type PrescriptionCreateManyMedicineInputEnvelope = {
+  data: Prisma.PrescriptionCreateManyMedicineInput | Prisma.PrescriptionCreateManyMedicineInput[]
+  skipDuplicates?: boolean
+}
+
+export type PrescriptionUpsertWithWhereUniqueWithoutMedicineInput = {
+  where: Prisma.PrescriptionWhereUniqueInput
+  update: Prisma.XOR<Prisma.PrescriptionUpdateWithoutMedicineInput, Prisma.PrescriptionUncheckedUpdateWithoutMedicineInput>
+  create: Prisma.XOR<Prisma.PrescriptionCreateWithoutMedicineInput, Prisma.PrescriptionUncheckedCreateWithoutMedicineInput>
+}
+
+export type PrescriptionUpdateWithWhereUniqueWithoutMedicineInput = {
+  where: Prisma.PrescriptionWhereUniqueInput
+  data: Prisma.XOR<Prisma.PrescriptionUpdateWithoutMedicineInput, Prisma.PrescriptionUncheckedUpdateWithoutMedicineInput>
+}
+
+export type PrescriptionUpdateManyWithWhereWithoutMedicineInput = {
+  where: Prisma.PrescriptionScalarWhereInput
+  data: Prisma.XOR<Prisma.PrescriptionUpdateManyMutationInput, Prisma.PrescriptionUncheckedUpdateManyWithoutMedicineInput>
+}
+
 export type PrescriptionCreateManyUserInput = {
   id?: number
+  medicineId: number
   pharmacistId?: number | null
   documentUrl: string
   publicId?: string | null
@@ -679,6 +806,7 @@ export type PrescriptionCreateManyUserInput = {
 export type PrescriptionCreateManyPharmacistInput = {
   id?: number
   userId: number
+  medicineId: number
   documentUrl: string
   publicId?: string | null
   status?: $Enums.PrescriptionStatus
@@ -694,11 +822,13 @@ export type PrescriptionUpdateWithoutUserInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  medicine?: Prisma.MedicineUpdateOneRequiredWithoutPrescriptionsNestedInput
   pharmacist?: Prisma.UserUpdateOneWithoutReviewedPrescriptionsNestedInput
 }
 
 export type PrescriptionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  medicineId?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -710,6 +840,7 @@ export type PrescriptionUncheckedUpdateWithoutUserInput = {
 
 export type PrescriptionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  medicineId?: Prisma.IntFieldUpdateOperationsInput | number
   pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -727,11 +858,13 @@ export type PrescriptionUpdateWithoutPharmacistInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPrescriptionsNestedInput
+  medicine?: Prisma.MedicineUpdateOneRequiredWithoutPrescriptionsNestedInput
 }
 
 export type PrescriptionUncheckedUpdateWithoutPharmacistInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  medicineId?: Prisma.IntFieldUpdateOperationsInput | number
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
@@ -743,6 +876,54 @@ export type PrescriptionUncheckedUpdateWithoutPharmacistInput = {
 export type PrescriptionUncheckedUpdateManyWithoutPharmacistInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  medicineId?: Prisma.IntFieldUpdateOperationsInput | number
+  documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PrescriptionCreateManyMedicineInput = {
+  id?: number
+  userId: number
+  pharmacistId?: number | null
+  documentUrl: string
+  publicId?: string | null
+  status?: $Enums.PrescriptionStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PrescriptionUpdateWithoutMedicineInput = {
+  documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPrescriptionsNestedInput
+  pharmacist?: Prisma.UserUpdateOneWithoutReviewedPrescriptionsNestedInput
+}
+
+export type PrescriptionUncheckedUpdateWithoutMedicineInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PrescriptionUncheckedUpdateManyWithoutMedicineInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  pharmacistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPrescriptionStatusFieldUpdateOperationsInput | $Enums.PrescriptionStatus
@@ -756,6 +937,7 @@ export type PrescriptionUncheckedUpdateManyWithoutPharmacistInput = {
 export type PrescriptionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  medicineId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
   publicId?: boolean
@@ -764,12 +946,14 @@ export type PrescriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  medicine?: boolean | Prisma.MedicineDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
 }, ExtArgs["result"]["prescription"]>
 
 export type PrescriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  medicineId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
   publicId?: boolean
@@ -778,12 +962,14 @@ export type PrescriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  medicine?: boolean | Prisma.MedicineDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
 }, ExtArgs["result"]["prescription"]>
 
 export type PrescriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  medicineId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
   publicId?: boolean
@@ -792,12 +978,14 @@ export type PrescriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  medicine?: boolean | Prisma.MedicineDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
 }, ExtArgs["result"]["prescription"]>
 
 export type PrescriptionSelectScalar = {
   id?: boolean
   userId?: boolean
+  medicineId?: boolean
   pharmacistId?: boolean
   documentUrl?: boolean
   publicId?: boolean
@@ -807,17 +995,20 @@ export type PrescriptionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PrescriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "pharmacistId" | "documentUrl" | "publicId" | "status" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["prescription"]>
+export type PrescriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "medicineId" | "pharmacistId" | "documentUrl" | "publicId" | "status" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["prescription"]>
 export type PrescriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  medicine?: boolean | Prisma.MedicineDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
 }
 export type PrescriptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  medicine?: boolean | Prisma.MedicineDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
 }
 export type PrescriptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  medicine?: boolean | Prisma.MedicineDefaultArgs<ExtArgs>
   pharmacist?: boolean | Prisma.Prescription$pharmacistArgs<ExtArgs>
 }
 
@@ -825,11 +1016,13 @@ export type $PrescriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "Prescription"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    medicine: Prisma.$MedicinePayload<ExtArgs>
     pharmacist: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     userId: number
+    medicineId: number
     pharmacistId: number | null
     documentUrl: string
     publicId: string | null
@@ -1232,6 +1425,7 @@ readonly fields: PrescriptionFieldRefs;
 export interface Prisma__PrescriptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  medicine<T extends Prisma.MedicineDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MedicineDefaultArgs<ExtArgs>>): Prisma.Prisma__MedicineClient<runtime.Types.Result.GetResult<Prisma.$MedicinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   pharmacist<T extends Prisma.Prescription$pharmacistArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prescription$pharmacistArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1264,6 +1458,7 @@ export interface Prisma__PrescriptionClient<T, Null = never, ExtArgs extends run
 export interface PrescriptionFieldRefs {
   readonly id: Prisma.FieldRef<"Prescription", 'Int'>
   readonly userId: Prisma.FieldRef<"Prescription", 'Int'>
+  readonly medicineId: Prisma.FieldRef<"Prescription", 'Int'>
   readonly pharmacistId: Prisma.FieldRef<"Prescription", 'Int'>
   readonly documentUrl: Prisma.FieldRef<"Prescription", 'String'>
   readonly publicId: Prisma.FieldRef<"Prescription", 'String'>

@@ -38,7 +38,7 @@ router.get("/my", authenticate, authorize("CUSTOMER"), getMyPrescriptions);
 router.get(
   "/pending",
   authenticate,
-  authorize("PHARMACIST"),
+  authorize("ADMIN", "PHARMACIST"),
   getPendingPrescriptions,
 );
 
@@ -46,7 +46,7 @@ router.get(
 router.patch(
   "/:id/approve",
   authenticate,
-  authorize("PHARMACIST"),
+  authorize("ADMIN", "PHARMACIST"),
   approvePrescription,
 );
 

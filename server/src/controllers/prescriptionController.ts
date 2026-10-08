@@ -17,6 +17,30 @@ export const createPrescription = async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    const medicineId = Number(req.body.medicineId);
+
+    if (!Number.isInteger(medicineId) || medicineId <= 0) {
+      return res.status(400).json({
+        message: "Valid medicine ID is required",
+      });
+    }
+
+    const medicine = await prisma.medicine.findUnique({
+      where: { id: medicineId },
+    });
+
+    if (!medicine) {
+      return res.status(404).json({
+        message: "Medicine not found",
+      });
+    }
+
+    if (!medicine.requiresPrescription) {
+      return res.status(400).json({
+        message: "This medicine does not require a prescription",
+      });
+    }
+
     if (!req.file) {
       return res.status(400).json({
         message: "Prescription file is required",
@@ -33,11 +57,13 @@ export const createPrescription = async (req: AuthRequest, res: Response) => {
       req.file.buffer,
       req.file.mimetype,
     );
+
     publicId = uploadedFile.public_id;
 
     const prescription = await prisma.prescription.create({
       data: {
         userId: req.auth.userId,
+        medicineId,
         documentUrl: uploadedFile.secure_url,
         publicId: uploadedFile.public_id,
       },
@@ -50,7 +76,6 @@ export const createPrescription = async (req: AuthRequest, res: Response) => {
   } catch (error) {
     console.error("Create prescription error:", error);
 
-    // Avoid orphaned files if the DB write failed after a successful upload.
     if (publicId) {
       await deleteFromCloudinary(publicId).catch((e) =>
         console.error("Cloudinary cleanup failed:", e),
@@ -66,6 +91,7 @@ export const createPrescription = async (req: AuthRequest, res: Response) => {
 export const getMyPrescriptions = async (req: AuthRequest, res: Response) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
+
     const pageSize = Math.min(
       100,
       Math.max(1, Number(req.query.pageSize) || 20),
@@ -88,6 +114,15 @@ export const getMyPrescriptions = async (req: AuthRequest, res: Response) => {
             email: true,
           },
         },
+        medicine: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+            stock: true,
+          },
+        },
       },
     });
 
@@ -107,6 +142,7 @@ export const getPendingPrescriptions = async (
 ) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
+
     const pageSize = Math.min(
       100,
       Math.max(1, Number(req.query.pageSize) || 20),
@@ -122,6 +158,15 @@ export const getPendingPrescriptions = async (
             id: true,
             name: true,
             email: true,
+          },
+        },
+        medicine: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+            stock: true,
           },
         },
       },
@@ -152,10 +197,11 @@ export const approvePrescription = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    // Atomic guarded update: only succeeds if the row is still PENDING,
-    // preventing a race between two reviewers approving/rejecting at once.
     const result = await prisma.prescription.updateMany({
-      where: { id, status: "PENDING" },
+      where: {
+        id,
+        status: "PENDING",
+      },
       data: {
         status: "APPROVED",
         pharmacistId: req.auth!.userId,
@@ -164,7 +210,9 @@ export const approvePrescription = async (req: AuthRequest, res: Response) => {
     });
 
     if (result.count === 0) {
-      const existing = await prisma.prescription.findUnique({ where: { id } });
+      const existing = await prisma.prescription.findUnique({
+        where: { id },
+      });
 
       if (!existing) {
         return res.status(404).json({
@@ -179,6 +227,31 @@ export const approvePrescription = async (req: AuthRequest, res: Response) => {
 
     const updatedPrescription = await prisma.prescription.findUnique({
       where: { id },
+      include: {
+        medicine: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+            stock: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        pharmacist: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
 
     return res.status(200).json({
@@ -198,6 +271,7 @@ export const rejectPrescription = async (req: AuthRequest, res: Response) => {
   try {
     const id = Number(req.params.id);
     const { rejectionReason } = req.body;
+
     const trimmedReason =
       typeof rejectionReason === "string" ? rejectionReason.trim() : "";
 
@@ -219,9 +293,11 @@ export const rejectPrescription = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    // Same atomic-guard pattern as approvePrescription.
     const result = await prisma.prescription.updateMany({
-      where: { id, status: "PENDING" },
+      where: {
+        id,
+        status: "PENDING",
+      },
       data: {
         status: "REJECTED",
         pharmacistId: req.auth!.userId,
@@ -230,7 +306,9 @@ export const rejectPrescription = async (req: AuthRequest, res: Response) => {
     });
 
     if (result.count === 0) {
-      const existing = await prisma.prescription.findUnique({ where: { id } });
+      const existing = await prisma.prescription.findUnique({
+        where: { id },
+      });
 
       if (!existing) {
         return res.status(404).json({
@@ -245,6 +323,31 @@ export const rejectPrescription = async (req: AuthRequest, res: Response) => {
 
     const updatedPrescription = await prisma.prescription.findUnique({
       where: { id },
+      include: {
+        medicine: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+            stock: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        pharmacist: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
 
     return res.status(200).json({

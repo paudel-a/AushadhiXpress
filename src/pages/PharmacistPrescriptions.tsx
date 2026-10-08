@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import {
   CheckCircle2,
   Clock3,
@@ -25,6 +26,8 @@ interface Prescription {
 }
 
 function PharmacistPrescriptions() {
+  const { user } = useAuth();
+  const isPharmacist = user?.role === "PHARMACIST";
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
@@ -320,36 +323,38 @@ function PharmacistPrescriptions() {
                     </a>
                   </div>
 
-                  {/* Actions */}
-                  <div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-5 sm:flex-row">
-                    <button
-                      type="button"
-                      onClick={() => handleApprove(prescription.id)}
-                      disabled={isUpdating}
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {isUpdating ? (
-                        <Loader2 size={17} className="animate-spin" />
-                      ) : (
-                        <CheckCircle2 size={17} />
-                      )}
-                      Approve
-                    </button>
+                  {/* Actions (pharmacist only) */}
+                  {isPharmacist && (
+                    <div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-5 sm:flex-row">
+                      <button
+                        type="button"
+                        onClick={() => handleApprove(prescription.id)}
+                        disabled={isUpdating}
+                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {isUpdating ? (
+                          <Loader2 size={17} className="animate-spin" />
+                        ) : (
+                          <CheckCircle2 size={17} />
+                        )}
+                        Approve
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setError("");
-                        setRejectingPrescription(prescription);
-                        setRejectionReason("");
-                      }}
-                      disabled={isUpdating}
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      <XCircle size={17} />
-                      Reject
-                    </button>
-                  </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setError("");
+                          setRejectingPrescription(prescription);
+                          setRejectionReason("");
+                        }}
+                        disabled={isUpdating}
+                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        <XCircle size={17} />
+                        Reject
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -358,7 +363,7 @@ function PharmacistPrescriptions() {
       </div>
 
       {/* Reject Modal */}
-      {rejectingPrescription && (
+      {isPharmacist && rejectingPrescription && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
           <div className="w-full max-w-md rounded-2xl bg-white shadow-xl">
             {/* Modal Header */}

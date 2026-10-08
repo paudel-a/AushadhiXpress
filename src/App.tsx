@@ -24,6 +24,7 @@ import PharmacistPrescriptions from "./pages/PharmacistPrescriptions";
 import AdminOrdersPage from "./components/admin/AdminOrdersPage";
 import AdminRoute from "./components/auth/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 function Home() {
   return (
@@ -50,7 +51,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/auth/google/success" element={<GoogleAuthSuccess />} />
           <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/admin/medicines" element={<MedicinesAdminPage />} />
           <Route path="/medicines" element={<MedicinePage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
@@ -62,10 +62,21 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/prescriptions" element={<Prescriptions />} />
+
             <Route element={<AdminRoute />}>
-              <Route path="/admin/medicines" element={<MedicinesAdminPage />} />
-              <Route path="/admin/orders" element={<AdminOrdersPage />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route element={<AdminLayout />}>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+                <Route
+                  path="/admin/medicines"
+                  element={<MedicinesAdminPage />}
+                />
+                <Route
+                  path="/admin/prescriptions"
+                  element={<PharmacistPrescriptions />}
+                />
+                <Route path="/admin/orders" element={<AdminOrdersPage />} />
+              </Route>
             </Route>
             <Route
               path="/pharmacist/prescriptions"

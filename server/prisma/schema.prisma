@@ -55,27 +55,30 @@ model Medicine {
 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  orderItems OrderItem[]
+  orderItems     OrderItem[]
+prescriptions  Prescription[]
 
   @@index([categoryId])
 }
-
 model Prescription {
   id              Int                @id @default(autoincrement())
   userId          Int
+  medicineId      Int
   pharmacistId    Int?
   documentUrl     String
   publicId        String?
   status          PrescriptionStatus @default(PENDING)
   rejectionReason String?
 
-  user       User  @relation("CustomerPrescriptions", fields: [userId], references: [id])
-  pharmacist User? @relation("PharmacistPrescriptions", fields: [pharmacistId], references: [id])
+  user       User     @relation("CustomerPrescriptions", fields: [userId], references: [id])
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  pharmacist User?    @relation("PharmacistPrescriptions", fields: [pharmacistId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([userId])
+  @@index([medicineId])
   @@index([pharmacistId])
   @@index([status])
 }

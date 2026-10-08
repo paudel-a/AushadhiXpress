@@ -27,7 +27,11 @@ function Login() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/");
+      if (user.role === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error: any) {
       setError(
         error.response?.data?.message || "Login failed. Please try again.",

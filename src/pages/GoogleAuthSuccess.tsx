@@ -20,7 +20,11 @@ function GoogleAuthSuccess() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/");
+      if (user.role === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Google authentication error:", error);
       navigate("/login?error=google");

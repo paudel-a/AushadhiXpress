@@ -51,7 +51,7 @@ function AdminMedicinesPage() {
   const [loading, setLoading] = useState(true);
 
   const [editingMedicine, setEditingMedicine] = useState<Medicine | null>(null);
-
+  const [addingMedicine, setAddingMedicine] = useState(false);
   const [deletingMedicine, setDeletingMedicine] = useState<Medicine | null>(
     null,
   );
@@ -221,10 +221,20 @@ function AdminMedicinesPage() {
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-10">
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-8 text-3xl font-bold text-slate-900">
-          Manage Medicines
-        </h1>
+        <div className="mb-8 flex items-center justify-between gap-4">
+          <h1 className="text-3xl font-bold text-slate-900">
+            Manage Medicines
+          </h1>
 
+          <button
+            type="button"
+            onClick={() => setAddingMedicine(true)}
+            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          >
+            <Plus size={18} />
+            Add New Medicine
+          </button>
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {medicines.map((medicine) => {
             const stockStatus = getStockStatus(medicine.stock);
@@ -354,7 +364,17 @@ function AdminMedicinesPage() {
           }}
         />
       )}
-
+      {/* Add medicine modal */}
+      {addingMedicine && (
+        <AddMedicineModal
+          categories={categories}
+          onClose={() => setAddingMedicine(false)}
+          onCreated={(created) => {
+            setMedicines((prev) => [...prev, created]);
+            setAddingMedicine(false);
+          }}
+        />
+      )}
       {/* Delete confirmation */}
       {deletingMedicine && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
@@ -695,5 +715,245 @@ function EditMedicineModal({
     </div>
   );
 }
+function AddMedicineModal({
+  categories,
+  onClose,
+  onCreated,
+}: {
+  categories: Category[];
+  onClose: () => void;
+  onCreated: (medicine: Medicine) => void;
+}) {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [requiresPrescription, setRequiresPrescription] = useState(false);
 
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setError(null);
+
+    if (!name.trim()) {
+      setError("Name is required.");
+      return;
+    }
+
+    if (price === "" || !Number.isFinite(Number(price)) || Number(price) < 0) {
+      setError("Please enter a valid price.");
+      return;
+    }
+
+    if (stock === "" || !Number.isInteger(Number(stock)) || Number(stock) < 0) {
+      setError("Please enter a valid stock quantity.");
+      return;
+    }
+
+    if (!categoryId) {
+      setError("Please select a category.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("Authentication token not found. Please sign in again.");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/medicines", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          description: description.trim() || null,
+          price: Number(price),
+          stock: Number(stock),
+          categoryId: Number(categoryId),
+          requiresPrescription,
+        }),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message || `Failed to create medicine (${response.status})`,
+        );
+      }
+
+      onCreated(data);
+    } catch (error) {
+      console.error("Create medicine error:", error);
+
+      setError(
+        error instanceof Error ? error.message : "Failed to create medicine.",
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
+      <div className="w-full max-w-lg rounded-xl bg-white shadow-lg">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+          <h3 className="text-lg font-semibold text-slate-900">
+            Add New Medicine
+          </h3>
+
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={saving}
+            className="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 px-6 py-5">
+          {error && (
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+              {error}
+            </p>
+          )}
+
+          {/* Name */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Name
+            </label>
+
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter medicine name"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-500"
+              required
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Description
+            </label>
+
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter medicine description"
+              rows={3}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-500"
+            />
+          </div>
+
+          {/* Price + Stock */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Price (Rs.)
+              </label>
+
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="0.00"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Stock
+              </label>
+
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+                placeholder="0"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-500"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Category
+            </label>
+
+            <select
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-500"
+              required
+            >
+              <option value="">Select category</option>
+
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Prescription */}
+          <label className="flex items-center gap-2 text-sm text-slate-700">
+            <input
+              type="checkbox"
+              checked={requiresPrescription}
+              onChange={(e) => setRequiresPrescription(e.target.checked)}
+              className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+            />
+            Requires prescription
+          </label>
+
+          {/* Buttons */}
+          <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={saving}
+              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-60"
+            >
+              {saving ? "Adding..." : "Add Medicine"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
 export default AdminMedicinesPage;

@@ -948,6 +948,7 @@ export type MedicineScalarFieldEnum = (typeof MedicineScalarFieldEnum)[keyof typ
 export const PrescriptionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  medicineId: 'medicineId',
   pharmacistId: 'pharmacistId',
   documentUrl: 'documentUrl',
   publicId: 'publicId',
