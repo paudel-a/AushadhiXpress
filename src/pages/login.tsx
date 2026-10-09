@@ -29,6 +29,8 @@ function Login() {
 
       if (user.role === "ADMIN") {
         navigate("/admin/dashboard");
+      } else if (user.role === "PHARMACIST") {
+        navigate("/pharmacist/prescriptions", { replace: true });
       } else {
         navigate("/");
       }

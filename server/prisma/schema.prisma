@@ -63,16 +63,16 @@ prescriptions  Prescription[]
 model Prescription {
   id              Int                @id @default(autoincrement())
   userId          Int
-  medicineId      Int
+  medicineId      Int?
   pharmacistId    Int?
   documentUrl     String
   publicId        String?
   status          PrescriptionStatus @default(PENDING)
   rejectionReason String?
 
-  user       User     @relation("CustomerPrescriptions", fields: [userId], references: [id])
-  medicine   Medicine @relation(fields: [medicineId], references: [id])
-  pharmacist User?    @relation("PharmacistPrescriptions", fields: [pharmacistId], references: [id])
+  user       User      @relation("CustomerPrescriptions", fields: [userId], references: [id])
+  medicine   Medicine? @relation(fields: [medicineId], references: [id])
+  pharmacist User?     @relation("PharmacistPrescriptions", fields: [pharmacistId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,6 +82,7 @@ model Prescription {
   @@index([pharmacistId])
   @@index([status])
 }
+
 
 enum OrderStatus {
   PENDING

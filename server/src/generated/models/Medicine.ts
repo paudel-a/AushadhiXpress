@@ -500,6 +500,11 @@ export type MedicineSumOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
 }
 
+export type MedicineNullableScalarRelationFilter = {
+  is?: Prisma.MedicineWhereInput | null
+  isNot?: Prisma.MedicineWhereInput | null
+}
+
 export type MedicineScalarRelationFilter = {
   is?: Prisma.MedicineWhereInput
   isNot?: Prisma.MedicineWhereInput
@@ -565,10 +570,12 @@ export type MedicineCreateNestedOneWithoutPrescriptionsInput = {
   connect?: Prisma.MedicineWhereUniqueInput
 }
 
-export type MedicineUpdateOneRequiredWithoutPrescriptionsNestedInput = {
+export type MedicineUpdateOneWithoutPrescriptionsNestedInput = {
   create?: Prisma.XOR<Prisma.MedicineCreateWithoutPrescriptionsInput, Prisma.MedicineUncheckedCreateWithoutPrescriptionsInput>
   connectOrCreate?: Prisma.MedicineCreateOrConnectWithoutPrescriptionsInput
   upsert?: Prisma.MedicineUpsertWithoutPrescriptionsInput
+  disconnect?: Prisma.MedicineWhereInput | boolean
+  delete?: Prisma.MedicineWhereInput | boolean
   connect?: Prisma.MedicineWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MedicineUpdateToOneWithWhereWithoutPrescriptionsInput, Prisma.MedicineUpdateWithoutPrescriptionsInput>, Prisma.MedicineUncheckedUpdateWithoutPrescriptionsInput>
 }
